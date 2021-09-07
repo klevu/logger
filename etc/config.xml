@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+    <default>
+        <klevu_logger>
+            <configuration>
+                <enable_logging>0</enable_logging>
+                <min_log_level>0</min_log_level>
+            </configuration>
+        </klevu_logger>
+    </default>
+</config>

@@ -1,0 +1,13 @@
+<?php
+    /** @var Klevu\Logger\Block\Adminhtml\Form\Button\LogClearButton $block */
+    $buttonLabel = $block->getDataUsingMethod('button_label');
+    $destinationUrl = $block->getDataUsingMethod('destination_url');
+?>
+<?php if ($buttonLabel && $destinationUrl): ?>
+    <button id="<?php $block->escapeQuote($block->getDataUsingMethod('html_id')); ?>"
+            type="button"
+            class="scalable"
+            onclick="setLocation('<?php echo $block->escapeUrl($destinationUrl); ?>')">
+        <span><?php echo $block->escapeHtml(__($buttonLabel)); ?></span>
+    </button>
+<?php endif; ?>

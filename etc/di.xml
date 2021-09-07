@@ -1,0 +1,66 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <preference for="Klevu\Logger\Api\ArchiveLogFileServiceInterface" type="Klevu\Logger\Service\ArchiveLogFileService"/>
+    <preference for="Klevu\Logger\Api\FileNameSanitizerServiceInterface" type="Klevu\Logger\Service\FileNameSanitizerService"/>
+    <preference for="Klevu\Logger\Api\KlevuLoggerInterface" type="Klevu\Logger\Logger\Logger"/>
+    <preference for="Klevu\Logger\Api\LogFileNameProviderInterface" type="Klevu\Logger\Service\LogFileNameProvider"/>
+    <preference for="Klevu\Logger\Api\LoggingEnabledServiceInterface" type="Klevu\Logger\Service\LoggingEnabledService"/>
+    <preference for="Klevu\Logger\Api\StoreScopeResolverInterface" type="Klevu\Logger\Service\StoreScopeResolver"/>
+
+    <!-- Services -->
+    <type name="Klevu\Logger\Service\ArchiveLogFileService">
+        <arguments>
+            <argument name="permittedArchiveLocations" xsi:type="array">
+                <!-- Can't use Magento\Framework\App\Filesystem\DirectoryList::LOG constant, as this returns just 'log' (the code) not the actual path) -->
+                <item name="var_log" xsi:type="string">var/log</item>
+            </argument>
+        </arguments>
+    </type>
+
+    <type name="Klevu\Logger\Service\LogFileNameProvider">
+        <arguments>
+            <argument name="fileNameValidator" xsi:type="object">Klevu\Logger\Validator\LogLocationFileNameValidator</argument>
+        </arguments>
+    </type>
+
+    <virtualType name="Klevu\Logger\Service\LogLevelComparatorService\Monolog" type="Klevu\Logger\Service\LogLevelComparatorService">
+        <arguments>
+            <argument name="lowValueIsHighPriority" xsi:type="boolean">false</argument>
+        </arguments>
+    </virtualType>
+
+    <virtualType name="Klevu\Logger\Service\LogLevelComparatorService\Zend" type="Klevu\Logger\Service\LogLevelComparatorService">
+        <arguments>
+            <argument name="lowValueIsHighPriority" xsi:type="boolean">true</argument>
+        </arguments>
+    </virtualType>
+
+    <type name="Klevu\Logger\Service\LoggingEnabledService">
+        <arguments>
+            <argument name="psrConvertLogLevelService" xsi:type="object">Klevu\Logger\Service\ConvertLogLevel\PsrToZend</argument>
+            <argument name="logLevelComparatorService" xsi:type="object">Klevu\Logger\Service\LogLevelComparatorService\Zend</argument>
+            <argument name="isEnabledConfigPath" xsi:type="const">Klevu\Logger\Constants::XML_PATH_ENABLE_LOGGING</argument>
+            <argument name="minLogLevelConfigPath" xsi:type="const">Klevu\Logger\Constants::XML_PATH_MIN_LOG_LEVEL</argument>
+        </arguments>
+    </type>
+
+    <!-- Logger -->
+    <type name="Klevu\Logger\Logger\Handler\LogIfConfigured">
+        <arguments>
+            <argument name="convertLogLevelService" xsi:type="object">Klevu\Logger\Service\ConvertLogLevel\PsrToMonolog</argument>
+        </arguments>
+    </type>
+
+    <!-- @todo Switch type for virtualType extending Magento\Framework\Logger\Monolog when KlevuLoggerInterface is dropped -->
+    <type name="Klevu\Logger\Logger\Logger">
+        <arguments>
+            <argument name="name" xsi:type="string">Klevu</argument>
+            <argument name="handlers" xsi:type="array">
+                <item name="report" xsi:type="object">Klevu\Logger\Logger\Handler\LogDisabled</item>
+                <item name="system" xsi:type="object">Klevu\Logger\Logger\Handler\LogDisabled</item>
+                <item name="debug" xsi:type="object">Klevu\Logger\Logger\Handler\LogDisabled</item>
+                <item name="klevu_logger" xsi:type="object">Klevu\Logger\Logger\Handler\LogIfConfigured</item>
+            </argument>
+        </arguments>
+    </type>
+</config>

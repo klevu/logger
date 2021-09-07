@@ -1,0 +1,26 @@
+<?php
+    /** @var Klevu\Logger\Block\Adminhtml\Form\Button\LogDownloadButton $block */
+    $buttonLabel = $block->getDataUsingMethod('button_label');
+    $destinationUrl = $block->getDataUsingMethod('destination_url');
+    $htmlId = $block->getDataUsingMethod('html_id');
+?>
+<?php if ($buttonLabel && $destinationUrl): ?>
+    <button id="<?php echo $block->escapeQuote($htmlId); ?>"
+            class="scalable"
+            type="button">
+        <span><?php echo $block->escapeHtml(__($buttonLabel)); ?></span>
+    </button>
+
+    <script type="text/javascript">
+        require(["prototype"], function(){
+            $("<?php echo $block->escapeQuote($htmlId) ?>").observe("click", function () {
+                new Ajax.Request("<?php echo $block->escapeUrl($destinationUrl); ?>", {
+                    method: 'POST',
+                    onComplete: function(data) {
+                        setLocation("<?php echo $block->escapeUrl($destinationUrl); ?>");
+                    }
+                });
+            });
+        });
+    </script>
+<?php endif; ?>
