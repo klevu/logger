@@ -9,6 +9,7 @@ use Klevu\Logger\Validator\ArgumentValidationTrait;
 use Magento\Backend\Block\Template\Context;
 use Magento\Config\Block\System\Config\Form\Field;
 use Magento\Framework\App\Filesystem\DirectoryList as DirectoryList;
+use Magento\Framework\App\ObjectManager;
 use Magento\Framework\Data\Form\Element\AbstractElement;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\Filesystem\Io\File as FileIo;
@@ -66,7 +67,6 @@ class LogClearButton extends Field
      * @param KlevuLoggerInterface $logger
      * @param DirectoryList $directoryList
      * @param FileIo $fileIo
-     * @param StoreManagerInterface $storeManager
      * @param LogFileNameProviderInterface $logFileNameProvider
      * @param string $destinationUrl
      * @param string $buttonLabel
@@ -77,7 +77,6 @@ class LogClearButton extends Field
         KlevuLoggerInterface $logger,
         DirectoryList $directoryList,
         FileIo $fileIo,
-        StoreManagerInterface $storeManager,
         LogFileNameProviderInterface $logFileNameProvider,
         $destinationUrl,
         $buttonLabel,
@@ -91,10 +90,13 @@ class LogClearButton extends Field
         $this->logger = $logger;
         $this->directoryList = $directoryList;
         $this->fileIo = $fileIo;
-        $this->storeManager = $storeManager;
         $this->logFileNameProvider = $logFileNameProvider;
         $this->destinationUrl = $destinationUrl;
         $this->buttonLabel = $buttonLabel;
+
+        // Cannot inject this in via di otherwise compilation errors in 2.1.x
+        $this->storeManager = $context->getStoreManager()
+            ?: ObjectManager::getInstance()->get(StoreManagerInterface::class);
     }
 
     /**
