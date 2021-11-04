@@ -32,6 +32,7 @@ class StoreScopeResolverTest  extends AbstractControllerTestCase
      *
      * @magentoAppArea frontend
      * @magentoAppIsolation enabled
+     * @magentoDbIsolation disabled
      * @magentoDataFixture loadStoreFixtures
      */
     public function testResolveCurrentStore_Frontend()
@@ -54,6 +55,7 @@ class StoreScopeResolverTest  extends AbstractControllerTestCase
      * @magentoAppArea adminhtml
      * @magentoCache all disabled
      * @magentoAppIsolation enabled
+     * @magentoDbIsolation disabled
      * @magentoDataFixture loadStoreFixtures
      */
     public function testResolveCurrentStore_AdminhtmlNoRequestParam()
@@ -85,6 +87,7 @@ class StoreScopeResolverTest  extends AbstractControllerTestCase
      * @magentoAppArea adminhtml
      * @magentoCache all disabled
      * @magentoAppIsolation enabled
+     * @magentoDbIsolation disabled
      * @magentoDataFixture loadStoreFixtures
      */
     public function testResolveCurrentStore_AdminhtmlWithStoreRequestParam()
@@ -119,6 +122,7 @@ class StoreScopeResolverTest  extends AbstractControllerTestCase
      *
      * @magentoAppArea frontend
      * @magentoAppIsolation enabled
+     * @magentoDbIsolation disabled
      * @magentoDataFixture loadStoreFixtures
      * @depends testResolveCurrentStore_Frontend
      */
