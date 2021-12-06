@@ -93,12 +93,12 @@ class ArchiveLogFileServiceTest extends TestCase
             ],
         ]);
 
-        $sourceFilePath = $this->installDir . '/generated/Klevu_Search.log';
+        $sourceFilePath = $this->installDir . '/etc/Klevu_Search.log';
 
         $this->createSourceFile($sourceFilePath);
         $this->assertFileExists($sourceFilePath);
 
-        $destinationFilePath = $this->installDir . '/generated/Klevu_Search.' . time() . '.log';
+        $destinationFilePath = $this->installDir . '/etc/Klevu_Search.' . time() . '.log';
         if (method_exists($this, 'expectException')) {
             $this->expectException(ArchiveLogFileException::class);
         } else {
