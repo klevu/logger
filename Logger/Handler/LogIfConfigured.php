@@ -109,7 +109,7 @@ class LogIfConfigured extends BaseHandler
                 . DIRECTORY_SEPARATOR
                 . $this->fileNameSanitizerService->execute($fileName);
             /// @todo Remove bc check for Utils existence when support for 2.1.x is dropped
-            $this->url = class_exists('\Monolog\Utils')
+            $this->url = class_exists('\Monolog\Utils') && method_exists(\Monolog\Utils::class, 'canonicalizePath')
                 ? \Monolog\Utils::canonicalizePath($this->fileName)
                 : $this->fileName;
         }
