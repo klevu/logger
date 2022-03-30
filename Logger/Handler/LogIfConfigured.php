@@ -91,7 +91,7 @@ class LogIfConfigured extends BaseHandler
      * @param array $record
      * @throws FileSystemException
      */
-    public function write(array $record)
+    public function write(array $record): void
     {
         $fileName = $this->logFileNameProvider->execute(
             $this->storeScopeResolver->getCurrentStore()
@@ -123,7 +123,7 @@ class LogIfConfigured extends BaseHandler
      * @param array $record
      * @return bool
      */
-    public function isHandling(array $record)
+    public function isHandling(array $record): bool
     {
         // $record['level'] is monolog (EMERGENCY: 600 -> DEBUG: 100)
         // We convert to Psr as a standardised base

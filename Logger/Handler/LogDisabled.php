@@ -17,7 +17,7 @@ class LogDisabled extends BaseHandler
      * @param array $record
      * @return bool
      */
-    public function isHandling(array $record)
+    public function isHandling(array $record): bool
     {
         return false;
     }
