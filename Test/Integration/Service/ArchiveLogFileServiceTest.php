@@ -46,7 +46,7 @@ class ArchiveLogFileServiceTest extends TestCase
 
         $this->createSourceFile($sourceFilePath);
         $this->assertFileExists($sourceFilePath);
-        $sourceContentHash = md5(file_get_contents($sourceFilePath));
+        $sourceContentHash = crc32(file_get_contents($sourceFilePath));
 
         /** @noinspection PhpUnhandledExceptionInspection */
         $reportedDestinationFilePath = $archiveLogFileService->execute($sourceFilePath);
@@ -68,9 +68,8 @@ class ArchiveLogFileServiceTest extends TestCase
         }
         $this->assertFileExists($reportedDestinationFilePath);
 
-        $destinationContentHash = md5(file_get_contents($reportedDestinationFilePath));
+        $destinationContentHash = crc32(file_get_contents($reportedDestinationFilePath));
         $this->assertSame($sourceContentHash, $destinationContentHash);
-
     }
 
     /**
@@ -133,7 +132,7 @@ class ArchiveLogFileServiceTest extends TestCase
                 'var/log',
             ],
         ]);
-        $sourceFilePath = $this->installDir . '/var/log/Klevu_Search' . md5(time()) . '.log';
+        $sourceFilePath = $this->installDir . '/var/log/Klevu_Search' . crc32(time()) . '.log';
 
         if (method_exists($this, 'assertFileDoesNotExist')) {
             $this->assertFileDoesNotExist($sourceFilePath);

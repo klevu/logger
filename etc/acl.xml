@@ -7,7 +7,7 @@
                 <resource id="Magento_Backend::stores">
                     <resource id="Magento_Backend::stores_settings">
                         <resource id="Magento_Config::config">
-                             <resource id="Klevu_Search::klevu" title="Klevu" translate="title" sortOrder="80">
+                            <resource id="Klevu_Search::klevu" title="Klevu" translate="title" sortOrder="80">
                                 <resource id="Klevu_Logger::configuration" title="Klevu Search: Logging" translate="title" sortOrder="30"/>
                             </resource>
                         </resource>
