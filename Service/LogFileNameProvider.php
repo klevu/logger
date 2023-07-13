@@ -6,6 +6,7 @@ use Klevu\Logger\Api\LogFileNameProviderInterface;
 use Klevu\Logger\Validator\ArgumentValidationTrait;
 use Magento\Framework\Exception\ValidatorException;
 use Magento\Framework\Filesystem\Io\File as FileIo;
+use Magento\Framework\Validator\ValidateException;
 use Magento\Framework\Validator\ValidatorInterface;
 use Magento\Store\Api\Data\StoreInterface;
 use Psr\Log\LoggerInterface;
@@ -44,7 +45,7 @@ class LogFileNameProvider implements LogFileNameProviderInterface
      * @param LoggerInterface $logger
      * @param FileIo $fileIo
      * @param ValidatorInterface $fileNameValidator
-     * @param null $baseFileName
+     * @param string|null $baseFileName
      */
     public function __construct(
         LoggerInterface $logger,
@@ -87,7 +88,7 @@ class LogFileNameProvider implements LogFileNameProviderInterface
             if (!$this->fileNameValidator->isValid($fileName)) {
                 throw new ValidatorException(__(implode('; ', $this->fileNameValidator->getMessages())));
             }
-        } catch (\Zend_Validate_Exception $e) {
+        } catch (ValidateException $e) {
             throw new ValidatorException(__($e->getMessage()));
         }
 
