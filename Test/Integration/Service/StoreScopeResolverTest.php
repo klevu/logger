@@ -9,13 +9,9 @@ use Magento\Framework\ObjectManagerInterface;
 use Magento\Store\Model\Store;
 use Magento\Store\Model\StoreManagerInterface;
 use Magento\TestFramework\Helper\Bootstrap;
-use Magento\TestFramework\TestCase\AbstractController as AbstractControllerTestCase;
+use Magento\TestFramework\TestCase\AbstractBackendController as AbstractBackendControllerTestCase;
 
-/**
- * Class StoreScopeResolverTest
- * @package Klevu\Logger\Test\Integration\Service
- */
-class StoreScopeResolverTest  extends AbstractControllerTestCase
+class StoreScopeResolverTest extends AbstractBackendControllerTestCase
 {
     /**
      * @var ObjectManagerInterface
@@ -56,25 +52,21 @@ class StoreScopeResolverTest  extends AbstractControllerTestCase
      * @magentoCache all disabled
      * @magentoAppIsolation enabled
      * @magentoDbIsolation disabled
+     * @magentoConfigFixture default/admin/url/use_custom 1
+     * @magentoConfigFixture default_store admin/url/use_custom 1
+     * @magentoConfigFixture default/web/unsecure/base_url http://localhost/
+     * @magentoConfigFixture default/admin/url/custom http://localhost/
+     * @magentoConfigFixture default_store admin/url/custom http://localhost/
      * @magentoDataFixture loadStoreFixtures
      */
     public function testResolveCurrentStore_AdminhtmlNoRequestParam()
     {
         $this->setupPhp5();
 
-        /** @var AreaList $areaList */
-        $areaList = $this->objectManager->get(AreaList::class);
-        $adminFrontName = $areaList->getFrontName('adminhtml');
-        if (!$adminFrontName) {
-            /** @var FrontNameResolver $backendFrontNameResolver */
-            $backendFrontNameResolver = $this->objectManager->get(FrontNameResolver::class);
-            $adminFrontName = $backendFrontNameResolver->getFrontName(true);
-        }
-
         /** @var StoreScopeResolver $storeScopeResolver */
         $storeScopeResolver = $this->objectManager->get(StoreScopeResolver::class);
 
-        $this->dispatch($adminFrontName . '/admin/system_config/edit/section/general');
+        $this->dispatch($this->getAdminFrontName() . '/admin/system_config/edit/section/general');
 
         $currentStore = $storeScopeResolver->getCurrentStore();
 
@@ -88,20 +80,16 @@ class StoreScopeResolverTest  extends AbstractControllerTestCase
      * @magentoCache all disabled
      * @magentoAppIsolation enabled
      * @magentoDbIsolation disabled
+     * @magentoConfigFixture default/admin/url/use_custom 1
+     * @magentoConfigFixture default_store admin/url/use_custom 1
+     * @magentoConfigFixture default/web/unsecure/base_url http://localhost/
+     * @magentoConfigFixture default/admin/url/custom http://localhost/
+     * @magentoConfigFixture default_store admin/url/custom http://localhost/
      * @magentoDataFixture loadStoreFixtures
      */
     public function testResolveCurrentStore_AdminhtmlWithStoreRequestParam()
     {
         $this->setupPhp5();
-
-        /** @var AreaList $areaList */
-        $areaList = $this->objectManager->get(AreaList::class);
-        $adminFrontName = $areaList->getFrontName('adminhtml');
-        if (!$adminFrontName) {
-            /** @var FrontNameResolver $backendFrontNameResolver */
-            $backendFrontNameResolver = $this->objectManager->get(FrontNameResolver::class);
-            $adminFrontName = $backendFrontNameResolver->getFrontName(true);
-        }
 
         /** @var StoreManagerInterface $storeManager */
         $storeManager = $this->objectManager->get(StoreManagerInterface::class);
@@ -110,7 +98,7 @@ class StoreScopeResolverTest  extends AbstractControllerTestCase
         /** @var StoreScopeResolver $storeScopeResolver */
         $storeScopeResolver = $this->objectManager->get(StoreScopeResolver::class);
 
-        $this->dispatch($adminFrontName . '/admin/system_config/edit/section/general/store/' . $fixtureStore->getId());
+        $this->dispatch($this->getAdminFrontName() . '/admin/system_config/edit/section/general/store/' . $fixtureStore->getId());
 
         $currentStore = $storeScopeResolver->getCurrentStore();
 
@@ -123,6 +111,11 @@ class StoreScopeResolverTest  extends AbstractControllerTestCase
      * @magentoAppArea frontend
      * @magentoAppIsolation enabled
      * @magentoDbIsolation disabled
+     * @magentoConfigFixture default/admin/url/use_custom 1
+     * @magentoConfigFixture default_store admin/url/use_custom 1
+     * @magentoConfigFixture default/web/unsecure/base_url http://localhost/
+     * @magentoConfigFixture default/admin/url/custom http://localhost/
+     * @magentoConfigFixture default_store admin/url/custom http://localhost/
      * @magentoDataFixture loadStoreFixtures
      * @depends testResolveCurrentStore_Frontend
      */
@@ -144,6 +137,25 @@ class StoreScopeResolverTest  extends AbstractControllerTestCase
     }
 
     /**
+     * Returns configured admin front name for use in dispatching controller requests
+     *
+     * @return string
+     */
+    private function getAdminFrontName()
+    {
+        /** @var AreaList $areaList */
+        $areaList = $this->_objectManager->get(AreaList::class);
+        $adminFrontName = $areaList->getFrontName('adminhtml');
+        if (!$adminFrontName) {
+            /** @var FrontNameResolver $backendFrontNameResolver */
+            $backendFrontNameResolver = $this->_objectManager->get(FrontNameResolver::class);
+            $adminFrontName = $backendFrontNameResolver->getFrontName(true);
+        }
+
+        return (string)$adminFrontName;
+    }
+
+    /**
      * @return void
      * @todo Move to setUp when PHP 5.x is no longer supported
      */
@@ -160,5 +172,14 @@ class StoreScopeResolverTest  extends AbstractControllerTestCase
     public static function loadStoreFixtures()
     {
         include __DIR__ . '/../_files/storeFixtures.php';
+    }
+
+    /**
+     * Rolls back store creation scripts because annotations use a relative path
+     *  from integration tests root
+     */
+    public static function loadStoreFixturesRollback()
+    {
+        include __DIR__ . '/../_files/storeFixtures_rollback.php';
     }
 }
