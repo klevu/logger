@@ -3,6 +3,7 @@
 namespace Klevu\Logger\Logger\Handler;
 
 use Magento\Framework\Logger\Handler\Base as BaseHandler;
+use Monolog\LogRecord;
 
 /**
  * Handler class used to entirely disable logging
@@ -14,10 +15,10 @@ class LogDisabled extends BaseHandler
     /**
      * Never handle message writing, disabling write operations
      *
-     * @param array $record
+     * @param LogRecord $record
      * @return bool
      */
-    public function isHandling(array $record): bool
+    public function isHandling(LogRecord $record): bool
     {
         return false;
     }

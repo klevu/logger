@@ -49,7 +49,7 @@ class ArchiveLogFileService implements ArchiveLogFileServiceInterface
         FileIo $fileIo,
         DirectoryList $directoryList,
         TimezoneInterface $timezone,
-        array $permittedArchiveLocations = null
+        ?array $permittedArchiveLocations = null
     ) {
         $this->fileIo = $fileIo;
         $this->directoryList = $directoryList;
