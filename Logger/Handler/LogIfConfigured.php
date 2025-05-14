@@ -11,6 +11,7 @@ use Magento\Framework\App\Filesystem\DirectoryList;
 use Magento\Framework\Exception\FileSystemException;
 use Magento\Framework\Filesystem\DriverInterface;
 use Magento\Framework\Logger\Handler\Base as BaseHandler;
+use Monolog\LogRecord;
 use Psr\Log\LogLevel;
 
 /**
@@ -88,10 +89,10 @@ class LogIfConfigured extends BaseHandler
     /**
      * {@inheritdoc}
      *
-     * @param array $record
+     * @param LogRecord $record
      * @throws FileSystemException
      */
-    public function write(array $record): void
+    public function write(LogRecord $record): void
     {
         $fileName = $this->logFileNameProvider->execute(
             $this->storeScopeResolver->getCurrentStore()
@@ -120,10 +121,10 @@ class LogIfConfigured extends BaseHandler
     /**
      * Checks configuration to determine whether class should handle message
      *
-     * @param array $record
+     * @param LogRecord $record
      * @return bool
      */
-    public function isHandling(array $record): bool
+    public function isHandling(LogRecord $record): bool
     {
         // $record['level'] is monolog (EMERGENCY: 600 -> DEBUG: 100)
         // We convert to Psr as a standardised base

@@ -68,7 +68,7 @@ class LoggingEnabledService implements LoggingEnabledServiceInterface
         StoreManagerInterface $storeManager,
         LogLevelComparatorServiceInterface $logLevelComparatorService,
         ConvertLogLevelServiceInterface $psrConvertLogLevelService,
-        ConvertLogLevelServiceInterface $configConvertLogLevelService = null,
+        ?ConvertLogLevelServiceInterface $configConvertLogLevelService = null,
         $isEnabledConfigPath = null,
         $minLogLevelConfigPath = null
     ) {
