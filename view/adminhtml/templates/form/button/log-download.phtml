@@ -30,7 +30,7 @@ $htmlId = $block->getDataUsingMethod('html_id');
 
 script;
     ?>
-    <?= $secureRenderer->renderTag(
+    <?= /* @noEscape */ $secureRenderer->renderTag(
         'script',
         ['type' => 'text/javascript'],
         $scriptString,
