@@ -9,7 +9,7 @@
         "magento/module-store": "@stable"
     },
     "type": "magento2-module",
-    "version": "3.0.0",
+    "version": "3.0.1",
     "license": [
         "OSL-3.0",
         "AFL-3.0"
@@ -17,7 +17,7 @@
     "authors": [
         {
             "name": "Klevu Oy",
-            "email": "niraj.aswani@klevu.com",
+            "email": "contact@klevu.com",
             "homepage": "https://www.klevu.com/"
         }
     ],
