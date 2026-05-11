@@ -2,14 +2,14 @@
     "name": "klevu/module-logger",
     "description": "Provides logger functionality to modules within Klevu Magento 2 suite",
     "require": {
-        "php": "~8.0.0|~8.1.0|~8.2.0|~8.3.0|~8.4.0",
+        "php": "~8.0.0|~8.1.0|~8.2.0|~8.3.0|~8.4.0|~8.5.0",
         "psr/log": "*",
         "monolog/monolog": "~3.6",
         "magento/framework": ">=103.0.0",
         "magento/module-store": "@stable"
     },
     "type": "magento2-module",
-    "version": "3.0.1",
+    "version": "3.1.0",
     "license": [
         "OSL-3.0",
         "AFL-3.0"
